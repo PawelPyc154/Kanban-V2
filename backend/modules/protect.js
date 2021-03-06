@@ -1,21 +1,21 @@
-const cors = require("cors");
-const fileupload = require("express-fileupload");
-const mongoSanitize = require("express-mongo-sanitize");
-const helmet = require("helmet");
-const hpp = require("hpp");
-const xss = require("xss-clean");
-const rateLimit = require("express-rate-limit");
+const cors = require('cors');
+const fileupload = require('express-fileupload');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const hpp = require('hpp');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
 
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 25,
   message: {
-    error: {limiter: `Query limit exceeded`},
+    error: { limiter: `Query limit exceeded` },
   },
 });
 
 const protect = (app) => {
-  app.use(cors({credentials: true, origin: true}));
+  app.use(cors({ credentials: true, origin: true }));
   app.use(limiter);
   app.use(fileupload());
   app.use(mongoSanitize());
@@ -24,4 +24,5 @@ const protect = (app) => {
   app.use(hpp());
   return app;
 };
+
 module.exports = protect;

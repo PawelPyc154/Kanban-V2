@@ -19,11 +19,14 @@
   "homepage": "https://github.com/PawelPyc154/Kanban-V2-backend#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
     "cookie": "^0.4.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-mongo-sanitize": "^2.0.2",
     "express-rate-limit": "^5.2.6",
     "helmet": "^4.4.1",
     "hpp": "^0.2.3",
@@ -36,7 +39,6 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
-    "colors": "^1.4.0",
     "eslint": "^7.21.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.1.0",
