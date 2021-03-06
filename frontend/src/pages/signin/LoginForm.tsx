@@ -25,8 +25,8 @@ const LoginForm: React.FC<LoginFormProps> = () => {
     mode: 'onSubmit',
     resolver: yupResolver(schema),
   });
-  const test = (e: any) => {
-    console.log(e);
+  const test = () => {
+    // console.log(e);
   };
 
   return (
