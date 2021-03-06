@@ -8,7 +8,7 @@ const LoginEmailForm: React.FC<LoginEmailFormProps> = () => (
   <form action="" className="flex flex-col space-y-2 p-4">
     <h1 className="text-white">Login only with email</h1>
     <div className="flex space-x-2">
-      <Input placeholder="Email" className="flex-grow" />
+      <Input placeholder="Email" className="flex-grow" type="email" />
       <Button className="self-end">Login</Button>
     </div>
   </form>
