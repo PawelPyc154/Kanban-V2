@@ -22,6 +22,10 @@
   "rules": {
     "@typescript-eslint/space-infix-ops": "off",
     "@typescript-eslint/object-curly-spacing": "off",
-    "object-curly-newline": "off"
+    "object-curly-newline": "off",
+    "max-len": ["error", { "code": 120 }],
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": "off",
+    "react/button-has-type": "off"
   }
 }

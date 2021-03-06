@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Signin from './signin/Signin';
+import Signin from './signin';
 
 export interface PagesProps {}
 
