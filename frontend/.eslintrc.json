@@ -19,5 +19,9 @@
     "project": "./tsconfig.json"
   },
   "plugins": ["react", "@typescript-eslint"],
-  "rules": { "@typescript-eslint/space-infix-ops": "off", "@typescript-eslint/object-curly-spacing": "off" }
+  "rules": {
+    "@typescript-eslint/space-infix-ops": "off",
+    "@typescript-eslint/object-curly-spacing": "off",
+    "object-curly-newline": "off"
+  }
 }

@@ -1,6 +1,6 @@
 const express = require('express');
 
-// const dotenv = require("dotenv");
+const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 
 // middleware
@@ -12,9 +12,9 @@ const routes = require('./modules/routes');
 const connectDB = require('./modules/db');
 const devHeplers = require('./modules/devHelpers');
 
-// dotenv.config({ path: './config/config.env' });
+dotenv.config({ path: './config/config.env' });
 
-// connectDB();
+connectDB();
 
 let app = express();
 
