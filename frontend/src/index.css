@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gray-700;
+  }
+  h2 {
+    @apply text-xl;
+  }
+}
+
+.height-page {
+  height: calc(100vh - theme('spacing.10'));
+}
