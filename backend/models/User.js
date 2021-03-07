@@ -4,21 +4,15 @@ const bcript = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    trim: true,
-    required: [true, 'Nazwa użytkownika jest wymagana'],
-  },
   email: {
     type: String,
     trim: true,
+    unique: [true, 'elo'],
+    index: [true, 'elo'],
     required: [true, 'Email jest wymagany'],
-    unique: [true, 'Email jest już zajęty'],
-    match: [
-      /^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$/,
-      'Email jest nieprawidłowy',
-    ],
+    match: [/^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$/, 'Email jest nieprawidłowy'],
   },
+
   password: {
     type: String,
     trim: true,
@@ -61,10 +55,7 @@ UserSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString('hex');
 
   // Hash token and set to resetPassworToken field
-  this.resetPasswardToken = crypto
-    .createHash('sha256')
-    .update(resetToken)
-    .digest('hex');
+  this.resetPasswardToken = crypto.createHash('sha256').update(resetToken).digest('hex');
 
   // Set expire
   this.resetPasswardExpire = Date.now() + 10 * 60 * 1000;

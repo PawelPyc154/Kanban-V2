@@ -1,36 +1,56 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useMutation } from 'react-query';
 import * as yup from 'yup';
 import Button from '../../components/formFields/Button';
 import Input from '../../components/formFields/Input';
-import { email, password, passwordConfirm } from '../../utils/validation';
+import axiosApi from '../../utils/axiosApi';
+import { email, password } from '../../utils/validation';
 
-export interface CompositionFormValues {
+interface FormValue {
   email: string;
   password: string;
   passwordConfirm: string;
 }
 
-export interface RegisterFormProps {}
+interface RegisterFormProps {}
 
 const schema = yup.object().shape({
   email,
   password,
-  passwordConfirm,
 });
 
 const RegisterForm: React.FC<RegisterFormProps> = () => {
-  const { register, handleSubmit, errors } = useForm<CompositionFormValues>({
+  const { register, handleSubmit, errors } = useForm<FormValue>({
     mode: 'onSubmit',
     resolver: yupResolver(schema),
+    defaultValues: {
+      email: 'pawelpyc154@gmail.com',
+      password: 'Test1234$',
+      passwordConfirm: 'Test1234$',
+    },
   });
-  const handleRegister = () => {
-    // console.log(e);
+
+  // const { isLoading, data } = useQuery('repoData', () => {
+  //   axiosApi.post('/auth/register', { email });
+  // });
+  const { mutate, data, error, isSuccess, isLoading } = useMutation<{ email: string }, { error: string }, FormValue>(
+    (formValue) => axiosApi.post('/auth/register', formValue),
+  );
+
+  const handleRegister = (value: FormValue) => {
+    console.log('test');
+    mutate(value);
   };
+
   // @refresh reset
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   return (
     <form onSubmit={handleSubmit(handleRegister)} className="flex flex-col space-y-2 p-4">
+      {JSON.stringify(data)}
       <h1 className="text-white">Register</h1>
       <Input placeholder="Email" type="email" ref={register} name="email" errorMessage={errors.email?.message} />
       <Input
@@ -45,13 +65,15 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
           placeholder="Confirm password"
           type="password"
           ref={register}
-          name="passwordConfirm "
+          name="passwordConfirm"
           errorMessage={errors.passwordConfirm?.message}
         />
-        <Button type="submit" isLoading>
+        <Button type="submit" isLoading={isLoading}>
           Register
         </Button>
       </div>
+      {isSuccess && 'isSuccess'}
+      {error && JSON.stringify(error)}
     </form>
   );
 };

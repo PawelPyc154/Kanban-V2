@@ -1,4 +1,5 @@
 const ErrorResponse = require('../utils/errorResponse');
+const capitalize = require('../utils/capitalize');
 
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
@@ -9,14 +10,15 @@ const errorHandler = (err, req, res, next) => {
 
   // Mongoose bad ObjectID
   if (err.name === 'CastError') {
-    const message = `Bootcamp not found with id of ${err.value}`;
+    const message = `TODO not found with id of ${err.value}`;
     error = new ErrorResponse({ CastError: message }, 404);
   }
 
   // Mongoose duplicate key
   if (err.code === 11000) {
-    const message = 'Duplicate field value entered';
-    error = new ErrorResponse({ email: message }, 400);
+    const fieldName = Object.keys(err.keyValue)[0];
+    const message = `${capitalize(fieldName)} is already used`;
+    error = new ErrorResponse({ [fieldName]: message }, 400);
   }
 
   // Mongoose validation error

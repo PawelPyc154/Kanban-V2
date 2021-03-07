@@ -1,7 +1,7 @@
 const auth = require('../routes/auth');
 
 const routes = (app) => {
-  app.use('/', auth);
+  app.use('/api/auth', auth);
 };
 
 module.exports = routes;

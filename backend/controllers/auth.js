@@ -22,7 +22,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 // @route        POST /api/auth/register
 // @access       Public
 exports.register = asyncHandler(async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { email, password } = req.body;
   // Create user
   if (!email) {
     return next(new ErrorResponse({ email: 'Please add an email' }, 400));
@@ -30,11 +30,8 @@ exports.register = asyncHandler(async (req, res, next) => {
   if (!password) {
     return next(new ErrorResponse({ password: 'Please add a password' }, 400));
   }
-  if (!name) {
-    return next(new ErrorResponse({ name: 'Please add a name' }, 400));
-  }
+
   const user = await User.create({
-    name,
     email,
     password,
   });
