@@ -1,5 +1,4 @@
 import React from 'react';
-import LoginEmailForm from './LoginEmailForm';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 
@@ -8,7 +7,7 @@ export interface SigninProps {}
 const Signin: React.FC<SigninProps> = () => (
   <main className="height-page bg-green-600 flex items-center">
     <div className="max-w-sm mx-auto w-full bg-gray-600 rounded-sm flex flex-col divide-y">
-      <LoginEmailForm />
+      {/* <LoginEmailForm /> */}
       <LoginForm />
       <RegisterForm />
     </div>

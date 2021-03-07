@@ -42,19 +42,19 @@ exports.register = asyncHandler(async (req, res, next) => {
 // @route        POST /api/auth/facebook/token
 // @route        POST /api/auth/google/token
 // @access       Public
-exports.loginRegisterFbGoogle = asyncHandler(async (req, res, next) => {
-  const user = await User.findOne({ email: req.user._json.email });
-  if (user) {
-    return sendTokenResponse(user, 200, res);
-  }
-  const newUser = await User.create({
-    name: req.user.displayName,
-    email: req.user._json.email,
-  });
-  if (newUser) {
-    return sendTokenResponse(newUser, 200, res);
-  }
-});
+// exports.loginRegisterFbGoogle = asyncHandler(async (req, res, next) => {
+//   const user = await User.findOne({ email: req.user._json.email });
+//   if (user) {
+//     return sendTokenResponse(user, 200, res);
+//   }
+//   const newUser = await User.create({
+//     name: req.user.displayName,
+//     email: req.user._json.email,
+//   });
+//   if (newUser) {
+//     return sendTokenResponse(newUser, 200, res);
+//   }
+// });
 
 // @desc         Login user
 // @route        POST /api/auth/login
@@ -62,16 +62,7 @@ exports.loginRegisterFbGoogle = asyncHandler(async (req, res, next) => {
 exports.login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
   // validate email & password
-  if (email && !password) {
-    return next(
-      new ErrorResponse(
-        {
-          password: 'Podaj hasło lub spróbuj zalogować się przy użyciu FaceBook or Google',
-        },
-        401,
-      ),
-    );
-  }
+
   if (!email) {
     return next(new ErrorResponse({ email: 'Email jest wymagany' }, 400));
   }

@@ -35,22 +35,21 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
   // const { isLoading, data } = useQuery('repoData', () => {
   //   axiosApi.post('/auth/register', { email });
   // });
-  const { mutate, data, error, isSuccess, isLoading } = useMutation<{ email: string }, { error: string }, FormValue>(
+  const { mutate, data, isSuccess, isLoading } = useMutation<{ email: string }, { error: string }, FormValue>(
     (formValue) => axiosApi.post('/auth/register', formValue),
   );
 
   const handleRegister = (value: FormValue) => {
-    console.log('test');
+    // console.log('test');
     mutate(value);
   };
 
   // @refresh reset
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
   }, [data]);
   return (
     <form onSubmit={handleSubmit(handleRegister)} className="flex flex-col space-y-2 p-4">
-      {JSON.stringify(data)}
       <h1 className="text-white">Register</h1>
       <Input placeholder="Email" type="email" ref={register} name="email" errorMessage={errors.email?.message} />
       <Input
@@ -73,7 +72,6 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
         </Button>
       </div>
       {isSuccess && 'isSuccess'}
-      {error && JSON.stringify(error)}
     </form>
   );
 };
