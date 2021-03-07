@@ -23,6 +23,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 // @access       Public
 exports.register = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
+
   // Create user
   if (!email) {
     return next(new ErrorResponse({ email: 'Please add an email' }, 400));
