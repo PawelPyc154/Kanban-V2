@@ -1,24 +1,24 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import useMe from '../hooks/auth/useMe';
+import useMe from '../../hooks/auth/useMe';
 
-export interface PrivateRouteProps {
+export interface WithoutUserRouteProps {
   path: string;
   component: React.LazyExoticComponent<React.FC<any>>;
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => {
+const WithoutUserRoute: React.FC<WithoutUserRouteProps> = ({ component: Component, ...rest }) => {
   const { data } = useMe();
   return (
     <Route
       {...rest}
       render={(props) =>
-        data ? (
+        !data ? (
           <Component {...props} />
         ) : (
           <Redirect
             to={{
-              pathname: '/signin',
+              pathname: '/',
               state: { from: props.location },
             }}
           />
@@ -28,4 +28,4 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...re
   );
 };
 
-export default PrivateRoute;
+export default WithoutUserRoute;

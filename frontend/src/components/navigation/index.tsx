@@ -1,24 +1,23 @@
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import useMe from '../../hooks/auth/useMe';
 import axiosApi from '../../utils/axiosApi';
 import Button from '../formFields/Button';
 
-export interface NavigationProps {
-  email?: string;
-}
+export interface NavigationProps {}
 
-const Navigation: React.FC<NavigationProps> = ({ email }) => {
+const Navigation: React.FC<NavigationProps> = () => {
+  const { data } = useMe();
+
+  const history = useHistory();
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation<{ email: string }, { error: string }>(
     () => axiosApi.post('/auth/logout', {}),
     {
-      onMutate: (variables) => {
-        console.log(variables);
-      },
-      onSuccess: (data, variables, context) => {
+      onSuccess: () => {
         queryClient.setQueryData(['user'], null);
-        console.log(data, variables, context);
+        history.push('/signin');
       },
       onError: (error, variables, context) => {
         console.log(error, variables, context);
@@ -35,8 +34,15 @@ const Navigation: React.FC<NavigationProps> = ({ email }) => {
         <li>
           <Link to="/signin">Signin</Link>
         </li>
-        {email && <li>{email}</li>}
-        {email && (
+        <li>
+          <Link to="/test">test</Link>
+        </li>
+        <li>
+          <Link to="/test2">test2</Link>
+        </li>
+
+        {data?.email && <li>{data?.email}</li>}
+        {data?.email && (
           <li>
             <Button isLoading={isLoading} onClick={() => mutate()}>
               Logout

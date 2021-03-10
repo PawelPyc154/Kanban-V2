@@ -1,11 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
 import * as yup from 'yup';
 import Button from '../../components/formFields/Button';
 import Input from '../../components/formFields/Input';
-import axiosApi from '../../utils/axiosApi';
+import useRegister from '../../hooks/auth/useRegister';
 import { email, password } from '../../utils/validation';
 
 interface FormValue {
@@ -22,7 +21,7 @@ const schema = yup.object().shape({
 });
 
 const RegisterForm: React.FC<RegisterFormProps> = () => {
-  const { register, handleSubmit, errors } = useForm<FormValue>({
+  const { register, handleSubmit, errors, setError } = useForm<FormValue>({
     mode: 'onSubmit',
     resolver: yupResolver(schema),
     defaultValues: {
@@ -32,22 +31,11 @@ const RegisterForm: React.FC<RegisterFormProps> = () => {
     },
   });
 
-  // const { isLoading, data } = useQuery('repoData', () => {
-  //   axiosApi.post('/auth/register', { email });
-  // });
-  const { mutate, data, isSuccess, isLoading } = useMutation<{ email: string }, { error: string }, FormValue>(
-    (formValue) => axiosApi.post('/auth/register', formValue),
-  );
+  const { mutate, data, isSuccess, isLoading } = useRegister(setError);
 
-  const handleRegister = (value: FormValue) => {
-    // console.log('test');
-    mutate(value);
-  };
+  const handleRegister = (value: FormValue) => mutate(value);
 
-  // @refresh reset
-  useEffect(() => {
-    // console.log(data);
-  }, [data]);
+  useEffect(() => {}, [data]);
   return (
     <form onSubmit={handleSubmit(handleRegister)} className="flex flex-col space-y-2 p-4">
       <h1 className="text-white">Register</h1>

@@ -1,11 +1,6 @@
-import { useQuery } from 'react-query';
-import axiosApi from '../../utils/axiosApi';
+import { useContext } from 'react';
+import { UserContext } from '../../components/appProviders/UserProvider';
 
-const getMe = () => axiosApi.get('/auth/me').then((res) => res.data.data);
-
-const useMe = () =>
-  useQuery('user', getMe, {
-    retry: 1,
-  });
+const useMe = () => useContext(UserContext);
 
 export default useMe;

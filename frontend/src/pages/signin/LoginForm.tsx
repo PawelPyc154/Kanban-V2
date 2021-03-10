@@ -1,17 +1,12 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutation, useQueryClient } from 'react-query';
 import * as yup from 'yup';
 import Button from '../../components/formFields/Button';
 import Input from '../../components/formFields/Input';
-import axiosApi from '../../utils/axiosApi';
+import useLogin from '../../hooks/auth/useLogin';
+import LoginRequest from '../../models/LoginRequest';
 import { email, password } from '../../utils/validation';
-
-export interface FormValue {
-  email: string;
-  password: string;
-}
 
 export interface LoginFormProps {}
 
@@ -21,7 +16,7 @@ const schema = yup.object().shape({
 });
 
 const LoginForm: React.FC<LoginFormProps> = () => {
-  const { register, handleSubmit, errors } = useForm<FormValue>({
+  const { register, handleSubmit, errors, setError } = useForm<LoginRequest>({
     mode: 'onSubmit',
     resolver: yupResolver(schema),
     defaultValues: {
@@ -29,28 +24,11 @@ const LoginForm: React.FC<LoginFormProps> = () => {
       password: 'Test1234$',
     },
   });
-  const queryClient = useQueryClient();
-  const { mutate, isLoading } = useMutation<{ email: string }, { error: string }, FormValue>(
-    (formValue) => axiosApi.post('/auth/login', formValue),
-    {
-      onMutate: (variables) => {
-        queryClient.invalidateQueries('user');
-        console.log(variables);
-      },
-      onSuccess: (data, variables, context) => {
-        queryClient.invalidateQueries('user');
-        console.log(data, variables, context);
-      },
-      onError: (error, variables, context) => {
-        console.log(error, variables, context);
-      },
-    },
-  );
 
-  const handleLogin = (value: FormValue) => {
-    // console.log('test');
-    mutate(value);
-  };
+  const { mutate, isLoading } = useLogin(setError);
+
+  const handleLogin = (value: LoginRequest) => mutate(value);
+
   return (
     <form onSubmit={handleSubmit(handleLogin)} className="flex flex-col space-y-2 p-4">
       <h1 className="text-white">Login</h1>
@@ -63,7 +41,6 @@ const LoginForm: React.FC<LoginFormProps> = () => {
           name="password"
           errorMessage={errors.password?.message}
         />
-
         <Button type="submit" isLoading={isLoading}>
           Login
         </Button>

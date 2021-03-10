@@ -27,6 +27,9 @@
     "react/jsx-props-no-spreading": "off",
     "react/prop-types": "off",
     "react/button-has-type": "off",
-    "implicit-arrow-linebreak": "off"
+    "implicit-arrow-linebreak": "off",
+    "@typescript-eslint/indent": "off",
+    "no-confusing-arrow": "off",
+    "react/jsx-curly-newline": "off"
   }
 }

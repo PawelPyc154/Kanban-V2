@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
+import AppProviders from './components/appProviders';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
@@ -12,10 +13,12 @@ const queryClient = new QueryClient();
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
-      <Router>
-        <App />
-      </Router>
+      <AppProviders>
+        <ReactQueryDevtools initialIsOpen={false} />
+        <Router>
+          <App />
+        </Router>
+      </AppProviders>
     </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById('root'),
