@@ -11,6 +11,6 @@
   }
 }
 
-.height-page {
+.h-page {
   height: calc(100vh - theme('spacing.10'));
 }

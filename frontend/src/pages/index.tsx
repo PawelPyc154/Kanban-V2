@@ -1,21 +1,22 @@
 import React, { Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import UserRoute from '../components/routeGuards/UserRoute';
 import WithoutUserRoute from '../components/routeGuards/WithoutUserRoute';
 
 const Signin = React.lazy(() => import('./signin'));
 const Kanbans = React.lazy(() => import('./kanbans'));
+const Kanban = React.lazy(() => import('./kanban'));
 
 export interface PagesProps {}
 
 const Pages: React.FC<PagesProps> = () => (
   <Suspense fallback={<div> Loader</div>}>
     <Switch>
-      <Route path="/home" component={Signin} />
       <Route path="/about" component={Signin} />
       <WithoutUserRoute path="/signin" component={Signin} />
-      <UserRoute path="/test" component={Kanbans} />
-      <UserRoute path="/test2" component={Kanbans} />
+      <UserRoute path="/kanbans" component={Kanbans} />
+      <UserRoute path="/kanban/:id" component={Kanban} />
+      <Redirect from="*" to="/kanbans" />
     </Switch>
   </Suspense>
 );

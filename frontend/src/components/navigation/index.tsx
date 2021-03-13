@@ -29,16 +29,7 @@ const Navigation: React.FC<NavigationProps> = () => {
     <nav className="bg-gray-600 text-white h-10 px-5 flex items-center">
       <ul className="flex space-x-4 items-center ">
         <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/signin">Signin</Link>
-        </li>
-        <li>
-          <Link to="/test">test</Link>
-        </li>
-        <li>
-          <Link to="/test2">test2</Link>
+          <Link to="/kanbans">Signin</Link>
         </li>
 
         {data?.email && <li>{data?.email}</li>}
