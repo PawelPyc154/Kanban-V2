@@ -10,7 +10,7 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 1000,
   message: {
-    error: { limiter: `Query limit exceeded` },
+    error: { limiter: 'Query limit exceeded' },
   },
 });
 

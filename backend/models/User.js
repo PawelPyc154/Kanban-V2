@@ -19,6 +19,7 @@ const UserSchema = new mongoose.Schema({
     minlength: [6, 'Hasło jest zbyt krótkie!'],
     select: false,
   },
+  myboards: [{ type: mongoose.Schema.ObjectId, ref: 'Board' }],
   resetPasswardToken: String,
   resetPasswardExpire: Date,
   createdAt: {

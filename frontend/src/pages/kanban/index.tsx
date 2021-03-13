@@ -47,40 +47,44 @@ const Kanban: React.FC<KanbanProps> = () => {
     if (!destination || (destination.droppableId === source.droppableId && destination.index === source.index)) return;
 
     if (type === 'column') {
-      // move task inside column
-      const newColumnOrderIds = [...kanbanData.columnOrderIds];
-      newColumnOrderIds.splice(source.index, 1);
-      newColumnOrderIds.splice(destination.index, 0, draggableId);
-
-      setKanbanData((prev) => ({ ...prev, columnOrderIds: newColumnOrderIds }));
-
+      // move column
+      setKanbanData((prev) => {
+        const newColumnOrderIds = [...prev.columnOrderIds];
+        newColumnOrderIds.splice(source.index, 1);
+        newColumnOrderIds.splice(destination.index, 0, draggableId);
+        return { ...prev, columnOrderIds: newColumnOrderIds };
+      });
       return;
     }
+    if (type === 'task') {
+      const startColumn = kanbanData.columns[source.droppableId];
+      const endColumn = kanbanData.columns[destination.droppableId];
+      if (startColumn === endColumn) {
+        // move task inside column
+        setKanbanData((prev) => {
+          const newTaskOrderIds = [...startColumn.taskOrderIds];
+          newTaskOrderIds.splice(source.index, 1);
+          newTaskOrderIds.splice(destination.index, 0, draggableId);
+          const newColumn = { ...startColumn, taskOrderIds: newTaskOrderIds };
+          return { ...prev, columns: { ...prev.columns, [newColumn.id]: newColumn } };
+        });
+      } else {
+        // move task between column
+        setKanbanData((prev) => {
+          const newStartTaskOrderIds = [...startColumn.taskOrderIds];
+          newStartTaskOrderIds.splice(source.index, 1);
+          const newStartColumn = { ...startColumn, taskOrderIds: newStartTaskOrderIds };
 
-    const startColumn = kanbanData.columns[source.droppableId];
-    const endColumn = kanbanData.columns[destination.droppableId];
-    if (startColumn === endColumn) {
-      // move task inside column
-      const newTaskOrderIds = [...startColumn.taskOrderIds];
-      newTaskOrderIds.splice(source.index, 1);
-      newTaskOrderIds.splice(destination.index, 0, draggableId);
-      const newColumn = { ...startColumn, taskOrderIds: newTaskOrderIds };
-      setKanbanData((prev) => ({ ...prev, columns: { ...prev.columns, [newColumn.id]: newColumn } }));
-      return;
+          const newEndTaskOrderIds = [...endColumn.taskOrderIds];
+          newEndTaskOrderIds.splice(destination.index, 0, draggableId);
+          const newEndColumn = { ...endColumn, taskOrderIds: newEndTaskOrderIds };
+          return {
+            ...prev,
+            columns: { ...prev.columns, [newStartColumn.id]: newStartColumn, [newEndColumn.id]: newEndColumn },
+          };
+        });
+      }
     }
-
-    const newStartTaskOrderIds = [...startColumn.taskOrderIds];
-    newStartTaskOrderIds.splice(source.index, 1);
-    const newStartColumn = { ...startColumn, taskOrderIds: newStartTaskOrderIds };
-
-    const newEndTaskOrderIds = [...endColumn.taskOrderIds];
-    newEndTaskOrderIds.splice(destination.index, 0, draggableId);
-    const newEndColumn = { ...endColumn, taskOrderIds: newEndTaskOrderIds };
-
-    setKanbanData((prev) => ({
-      ...prev,
-      columns: { ...prev.columns, [newStartColumn.id]: newStartColumn, [newEndColumn.id]: newEndColumn },
-    }));
   };
 
   return (

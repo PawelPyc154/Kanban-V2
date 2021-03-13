@@ -1,6 +1,17 @@
 import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
+import { Draggable, DraggableStateSnapshot, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd';
 import { TaskType } from '../../models/KanbanTypes';
+
+function getStyle(style: DraggingStyle | NotDraggingStyle | undefined, snapshot: DraggableStateSnapshot) {
+  if (!snapshot.isDropAnimating) {
+    return style;
+  }
+  return {
+    ...style,
+    // cannot be 0, but make it super tiny
+    transitionDuration: '0.2s',
+  };
+}
 
 export interface TaskProps {
   task: TaskType;
@@ -15,6 +26,7 @@ const Task: React.FC<TaskProps> = ({ task, index }) => (
         {...provided.draggableProps}
         {...provided.dragHandleProps}
         ref={provided.innerRef}
+        style={getStyle(provided.draggableProps.style, snapshot)}
       >
         {task.content}
       </article>

@@ -1,6 +1,7 @@
 {
   "env": {
     "browser": true,
+    "commonjs": true,
     "es6": true
   },
   "extends": ["airbnb-base"],
@@ -8,12 +9,13 @@
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
-  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
+    "ecmaVersion": 2018
   },
-  "plugins": ["@typescript-eslint"],
-  "ignorePatterns": ["index.js"],
-  "rules": {}
+  "rules": {
+    "no-useless-escape": "off",
+    "no-underscore-dangle": "off",
+    "func-names": "off",
+    "implicit-arrow-linebreak": "off"
+  }
 }

@@ -1,7 +1,6 @@
-const crypto = require('crypto');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/errorResponse');
-const sendEmail = require('../utils/sendEmail');
+
 const User = require('../models/User');
 
 // Get token from model, create cookie and send response
@@ -36,7 +35,7 @@ exports.register = asyncHandler(async (req, res, next) => {
     email,
     password,
   });
-  sendTokenResponse(user, 200, res);
+  return sendTokenResponse(user, 200, res);
 });
 
 // @desc         Register or login with facebook or google
@@ -96,13 +95,13 @@ exports.login = asyncHandler(async (req, res, next) => {
       ),
     );
   }
-  sendTokenResponse(user, 200, res);
+  return sendTokenResponse(user, 200, res);
 });
 
 // @desc         Get current logged in user
 // @route        POST /api/auth/me
 // @access       Private
-exports.getMe = asyncHandler(async (req, res, next) => {
+exports.getMe = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id).populate({
     path: 'chat.user',
     select: 'name',
@@ -113,7 +112,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @desc         Logout clear cookie
 // @route        get /api/auth/logout
 // @access       Private
-exports.logout = asyncHandler(async (req, res, next) => {
+exports.logout = asyncHandler(async (req, res) => {
   res
     .status(200)
     .cookie('token', 'none', {
@@ -126,7 +125,7 @@ exports.logout = asyncHandler(async (req, res, next) => {
 // @desc         Update user detils
 // @route        PUT /api/auth/updatedetails
 // @access       Private
-exports.updateDetails = asyncHandler(async (req, res, next) => {
+exports.updateDetails = asyncHandler(async (req, res) => {
   const fieldsToUpdate = { name: req.body.name, email: req.body.email };
   const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
     new: true,
