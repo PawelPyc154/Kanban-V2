@@ -7,6 +7,7 @@ const ColumnSchema = new mongoose.Schema({
     required: [true, 'Nazwa jest wymagana'],
     max: [50, 'Zbyt długa nazwa'],
   },
+
   taskIds: [{ type: mongoose.Schema.ObjectId, ref: 'Column' }],
   createdAt: {
     type: Date,

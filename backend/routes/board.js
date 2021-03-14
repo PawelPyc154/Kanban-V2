@@ -2,8 +2,10 @@ const express = require('express');
 
 const router = express.Router();
 const { protect } = require('../middleware/auth');
-const { add } = require('../controllers/board');
+const { addBoard, getBoards, getBoardById } = require('../controllers/board');
 
-router.post('/add', protect, add);
+router.get('/all', protect, getBoards);
+router.post('/add', protect, addBoard);
+router.get('/:id', protect, getBoardById);
 
 module.exports = router;

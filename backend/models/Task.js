@@ -12,7 +12,7 @@ const TaskSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  user: {
+  addBy: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true,
