@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable, DraggableStateSnapshot, DraggingStyle, NotDraggingStyle } from 'react-beautiful-dnd';
-import { TaskType } from '../../models/KanbanTypes';
+import { TaskType } from '../../models/Board';
 
 function getStyle(style: DraggingStyle | NotDraggingStyle | undefined, snapshot: DraggableStateSnapshot) {
   if (!snapshot.isDropAnimating) {
@@ -19,7 +19,7 @@ export interface TaskProps {
 }
 
 const Task: React.FC<TaskProps> = ({ task, index }) => (
-  <Draggable draggableId={task.id} index={index}>
+  <Draggable draggableId={task._id} index={index}>
     {(provided, snapshot) => (
       <article
         className={`bg-blue-200 p-1 ${snapshot.isDragging ? 'bg-blue-500' : ''}`}
@@ -28,7 +28,7 @@ const Task: React.FC<TaskProps> = ({ task, index }) => (
         ref={provided.innerRef}
         style={getStyle(provided.draggableProps.style, snapshot)}
       >
-        {task.content}
+        {task.title}
       </article>
     )}
   </Draggable>

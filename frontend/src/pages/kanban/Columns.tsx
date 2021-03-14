@@ -1,20 +1,15 @@
 import React from 'react';
-import { KanbanDataType } from '../../models/KanbanTypes';
+import { ColumnType } from '../../models/Board';
 import Column from './Column';
 
 export interface ColumnsProps {
-  kanbanData: KanbanDataType;
+  columns: ColumnType[];
 }
 
-const Columns = React.memo<ColumnsProps>(({ kanbanData }) => (
+const Columns = React.memo<ColumnsProps>(({ columns }) => (
   <>
-    {kanbanData.columnOrderIds.map((columnId, index) => (
-      <Column
-        key={columnId}
-        columnIndex={index}
-        column={kanbanData.columns[columnId]}
-        tasks={kanbanData.columns[columnId].taskOrderIds.map((taskId) => kanbanData.tasks[taskId])}
-      />
+    {columns.map((column, index) => (
+      <Column key={column._id} columnIndex={index} column={column} tasks={column.tasks} />
     ))}
   </>
 ));

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { ColumnType, TaskType } from '../../models/KanbanTypes';
+import { ColumnType, TaskType } from '../../models/Board';
 import ColumnFooter from './ColumnFooter';
 import ColumnHeader from './ColumnHeader';
 import Tasks from './TasksList';
@@ -12,11 +12,11 @@ export interface ColumnProps {
 }
 
 const Column: React.FC<ColumnProps> = ({ column, tasks, columnIndex }) => (
-  <Draggable draggableId={column.id} index={columnIndex}>
+  <Draggable draggableId={column._id} index={columnIndex}>
     {(provided) => (
       <section className="bg-gray-400 rounded-sm w-72" ref={provided.innerRef} {...provided.draggableProps}>
         <ColumnHeader title={column.title} dragHandleProps={provided.dragHandleProps} />
-        <Tasks columnId={column.id} tasks={tasks} />
+        <Tasks columnId={column._id} tasks={tasks} />
         <ColumnFooter />
       </section>
     )}

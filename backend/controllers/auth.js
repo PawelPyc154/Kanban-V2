@@ -106,7 +106,7 @@ exports.getMe = asyncHandler(async (req, res) => {
     path: 'chat.user',
     select: 'name',
   });
-  res.status(200).json({ success: true, data: user });
+  res.status(200).json({ success: true, user });
 });
 
 // @desc         Logout clear cookie
@@ -119,7 +119,7 @@ exports.logout = asyncHandler(async (req, res) => {
       expires: new Date(Date.now() + 10 * 1000),
       httpOnly: true,
     })
-    .json({ success: true, date: {} });
+    .json({ success: true });
 });
 
 // @desc         Update user detils
@@ -131,5 +131,5 @@ exports.updateDetails = asyncHandler(async (req, res) => {
     new: true,
     runValidators: true,
   });
-  res.status(200).json({ success: true, data: user });
+  res.status(200).json({ success: true, user });
 });

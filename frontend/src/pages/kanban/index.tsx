@@ -1,94 +1,76 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { KanbanDataType } from '../../models/KanbanTypes';
+import { useParams } from 'react-router-dom';
+import useLog from '../../hooks/auth/useLog';
+import useBoard from '../../hooks/board/useBoard';
 import Columns from './Columns';
 
 export interface KanbanProps {}
 
-const initialState: KanbanDataType = {
-  columns: {
-    'id-1': {
-      id: 'id-1',
-      title: 'column-1',
-      taskOrderIds: ['taskid-1', 'taskid-2'],
-    },
-    'id-2': {
-      id: 'id-2',
-      title: 'column-1',
-      taskOrderIds: ['taskid-3', 'taskid-4'],
-    },
-  },
-  tasks: {
-    'taskid-1': {
-      id: 'taskid-1',
-      content: 'task-1',
-    },
-    'taskid-2': {
-      id: 'taskid-2',
-      content: 'task-2',
-    },
-    'taskid-3': {
-      id: 'taskid-3',
-      content: 'task-3',
-    },
-    'taskid-4': {
-      id: 'taskid-4',
-      content: 'task-4',
-    },
-  },
-
-  columnOrderIds: ['id-1', 'id-2'],
-};
-
 const Kanban: React.FC<KanbanProps> = () => {
-  const [kanbanData, setKanbanData] = useState(initialState);
+  const { id } = useParams<{ id: string }>();
+
+  const { data, error, isLoading } = useBoard(id);
+  useLog(data);
 
   const onDragEnd = ({ destination, source, draggableId, type }: DropResult) => {
     if (!destination || (destination.droppableId === source.droppableId && destination.index === source.index)) return;
-
+    console.log(destination, source, draggableId, type);
     if (type === 'column') {
+      console.log('moveColumn');
       // move column
-      setKanbanData((prev) => {
-        const newColumnOrderIds = [...prev.columnOrderIds];
-        newColumnOrderIds.splice(source.index, 1);
-        newColumnOrderIds.splice(destination.index, 0, draggableId);
-        return { ...prev, columnOrderIds: newColumnOrderIds };
-      });
+      // setKanbanData((prev) => {
+      //   const newColumnOrderIds = [...prev.columnOrderIds];
+      //   newColumnOrderIds.splice(source.index, 1);
+      //   newColumnOrderIds.splice(destination.index, 0, draggableId);
+      //   return { ...prev, columnOrderIds: newColumnOrderIds };
+      // });
       return;
     }
     if (type === 'task') {
-      const startColumn = kanbanData.columns[source.droppableId];
-      const endColumn = kanbanData.columns[destination.droppableId];
+      const startColumn = source.droppableId;
+      const endColumn = destination.droppableId;
       if (startColumn === endColumn) {
-        // move task inside column
-        setKanbanData((prev) => {
-          const newTaskOrderIds = [...startColumn.taskOrderIds];
-          newTaskOrderIds.splice(source.index, 1);
-          newTaskOrderIds.splice(destination.index, 0, draggableId);
-          const newColumn = { ...startColumn, taskOrderIds: newTaskOrderIds };
-          return { ...prev, columns: { ...prev.columns, [newColumn.id]: newColumn } };
-        });
+        // startColumn === endColumn
+        console.log('moveTask');
+        //   // move task inside column
+        //   setKanbanData((prev) => {
+        //     const newTaskOrderIds = [...startColumn.taskOrderIds];
+        //     newTaskOrderIds.splice(source.index, 1);
+        //     newTaskOrderIds.splice(destination.index, 0, draggableId);
+        //     const newColumn = { ...startColumn, taskOrderIds: newTaskOrderIds };
+        //     return { ...prev, columns: { ...prev.columns, [newColumn.id]: newColumn } };
+        //   });
       } else {
+        console.log('moveTaskBetweenColumn');
         // move task between column
-        setKanbanData((prev) => {
-          const newStartTaskOrderIds = [...startColumn.taskOrderIds];
-          newStartTaskOrderIds.splice(source.index, 1);
-          const newStartColumn = { ...startColumn, taskOrderIds: newStartTaskOrderIds };
-
-          const newEndTaskOrderIds = [...endColumn.taskOrderIds];
-          newEndTaskOrderIds.splice(destination.index, 0, draggableId);
-          const newEndColumn = { ...endColumn, taskOrderIds: newEndTaskOrderIds };
-          return {
-            ...prev,
-            columns: { ...prev.columns, [newStartColumn.id]: newStartColumn, [newEndColumn.id]: newEndColumn },
-          };
-        });
+        //     setKanbanData((prev) => {
+        //       const newStartTaskOrderIds = [...startColumn.taskOrderIds];
+        //       newStartTaskOrderIds.splice(source.index, 1);
+        //       const newStartColumn = { ...startColumn, taskOrderIds: newStartTaskOrderIds };
+        //       const newEndTaskOrderIds = [...endColumn.taskOrderIds];
+        //       newEndTaskOrderIds.splice(destination.index, 0, draggableId);
+        //       const newEndColumn = { ...endColumn, taskOrderIds: newEndTaskOrderIds };
+        //       return {
+        //         ...prev,
+        //         columns: { ...prev.columns, [newStartColumn.id]: newStartColumn, [newEndColumn.id]: newEndColumn },
+        //       };
+        //     });
+        //   }
       }
     }
   };
+  if (isLoading) {
+    return <div>Loader</div>;
+  }
+
+  if (error) {
+    return <div>Error</div>;
+  }
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      {JSON.stringify(data)}
       <Droppable droppableId="columns" direction="horizontal" type="column">
         {(provided) => (
           <main
@@ -96,7 +78,7 @@ const Kanban: React.FC<KanbanProps> = () => {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            <Columns kanbanData={kanbanData} />
+            {data?.board.columns && <Columns columns={data?.board.columns} />}
             {provided.placeholder}
           </main>
         )}

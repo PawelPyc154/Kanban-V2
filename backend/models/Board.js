@@ -7,7 +7,7 @@ const BoardSchema = new mongoose.Schema({
     required: [true, 'Nazwa jest wymagana'],
     max: [50, 'Zbyt długa nazwa'],
   },
-  columnIds: [{ type: mongoose.Schema.ObjectId, ref: 'Column' }],
+  columns: [{ type: mongoose.Schema.ObjectId, ref: 'Column' }],
   createdAt: {
     type: Date,
     default: Date.now,

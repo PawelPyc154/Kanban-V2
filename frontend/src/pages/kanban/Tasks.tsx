@@ -1,5 +1,5 @@
 import React from 'react';
-import { TaskType } from '../../models/KanbanTypes';
+import { TaskType } from '../../models/Board';
 import Task from './Task';
 
 export interface TasksProps {
@@ -9,7 +9,7 @@ export interface TasksProps {
 const Tasks = React.memo<TasksProps>(({ tasks }) => (
   <>
     {tasks.map((task, index) => (
-      <Task key={task.id} task={task} index={index} />
+      <Task key={task._id} task={task} index={index} />
     ))}
   </>
 ));

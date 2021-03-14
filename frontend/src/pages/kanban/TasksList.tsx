@@ -1,6 +1,6 @@
 import React from 'react';
 import { Droppable } from 'react-beautiful-dnd';
-import { TaskType } from '../../models/KanbanTypes';
+import { TaskType } from '../../models/Board';
 import Tasks from './Tasks';
 
 export interface TasksListProps {

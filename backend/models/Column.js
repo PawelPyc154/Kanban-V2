@@ -8,7 +8,7 @@ const ColumnSchema = new mongoose.Schema({
     max: [50, 'Zbyt długa nazwa'],
   },
 
-  taskIds: [{ type: mongoose.Schema.ObjectId, ref: 'Column' }],
+  tasks: [{ type: mongoose.Schema.ObjectId, ref: 'Task' }],
   createdAt: {
     type: Date,
     default: Date.now,

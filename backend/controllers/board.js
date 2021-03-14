@@ -20,12 +20,12 @@ exports.addBoard = asyncHandler(async (req, res) => {
   const taskIds = selectIds(tasks);
 
   const columns = await Column.create([
-    { title: 'Todo', addBy: req.user.id, taskIds },
+    { title: 'Todo', addBy: req.user.id, tasks: taskIds },
     { title: 'In progress', addBy: req.user.id },
     { title: 'Done', addBy: req.user.id },
   ]);
-  const columnIds = selectIds(columns);
-  req.body.columnIds = columnIds;
+
+  req.body.columns = selectIds(columns);
 
   const { _id, title } = await Board.create(req.body);
 
@@ -46,7 +46,14 @@ exports.getBoards = asyncHandler(async (req, res) => {
 // @access       Private
 exports.getBoardById = asyncHandler(async (req, res) => {
   const boardId = req.params.id;
-  const board = await Board.findById(boardId).populate('columnIds columnIds.taskIds');
+  const board = await Board.findById(boardId).populate({
+    path: 'columns',
+    populate: { path: 'tasks' },
+  });
+  // .exec();
 
+  // populate: {
+  //   path: 'taskIds',
+  // },
   res.status(200).json({ success: true, data: { board } });
 });
