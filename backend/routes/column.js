@@ -2,8 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 const { protect } = require('../middleware/auth');
-const { reOrderColumn } = require('../controllers/column');
+const { reorderColumn } = require('../controllers/column');
 
-router.get('/reOrder', protect, reOrderColumn);
+router.put('/reorder', reorderColumn);
 
 module.exports = router;

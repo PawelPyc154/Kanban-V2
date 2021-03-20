@@ -9,7 +9,7 @@ function getStyle(style: DraggingStyle | NotDraggingStyle | undefined, snapshot:
   return {
     ...style,
     // cannot be 0, but make it super tiny
-    transitionDuration: '0.2s',
+    transitionDuration: '0.01s',
   };
 }
 

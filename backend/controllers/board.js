@@ -29,7 +29,7 @@ exports.addBoard = asyncHandler(async (req, res) => {
 
   const { _id, title } = await Board.create(req.body);
 
-  res.status(201).json({ success: true, data: { board: { _id, title } } });
+  res.status(201).json({ _id, title });
 });
 
 // @desc         Get all boards
@@ -38,7 +38,7 @@ exports.addBoard = asyncHandler(async (req, res) => {
 exports.getBoards = asyncHandler(async (req, res) => {
   const boards = await Board.find({ members: req.user.id }).select('title');
 
-  res.status(200).json({ success: true, data: { boards } });
+  res.status(200).json(boards);
 });
 
 // @desc         Get board by id
@@ -50,10 +50,6 @@ exports.getBoardById = asyncHandler(async (req, res) => {
     path: 'columns',
     populate: { path: 'tasks' },
   });
-  // .exec();
 
-  // populate: {
-  //   path: 'taskIds',
-  // },
-  res.status(200).json({ success: true, data: { board } });
+  res.status(200).json(board);
 });

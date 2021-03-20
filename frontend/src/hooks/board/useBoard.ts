@@ -1,14 +1,15 @@
-import { QueryFunctionContext, useQuery } from 'react-query';
+import { useQuery } from 'react-query';
 import ApiError from '../../models/ApiError';
 import { BoardType } from '../../models/Board';
 import axiosApi from '../../utils/axiosApi';
 
-const getBoard = (params: QueryFunctionContext<['board', string]>) =>
-  axiosApi.get(`/boards/${params.queryKey[1]}`).then((data) => data.data.data);
-
 const useBoard = (id: string) =>
-  useQuery<{ board: BoardType }, ApiError<{}>>(['board', id], getBoard, {
-    retry: 1,
-  });
+  useQuery<BoardType, ApiError<{}>>(
+    ['board', id],
+    (params) => axiosApi.get(`/boards/${params.queryKey[1]}`).then((res) => res.data),
+    {
+      retry: 1,
+    },
+  );
 
 export default useBoard;

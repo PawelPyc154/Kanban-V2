@@ -6,9 +6,10 @@ export interface KanbansProps {}
 
 const Kanbans: React.FC<KanbansProps> = () => {
   const { data } = useBoards();
+
   return (
     <main className="text-gray-50">
-      {data?.boards.map((board) => (
+      {data?.map((board) => (
         <Link key={board._id} to={`/kanban/${board._id}`}>
           {board.title}
         </Link>

@@ -6,12 +6,12 @@ export interface ColumnsProps {
   columns: ColumnType[];
 }
 
-const Columns = React.memo<ColumnsProps>(({ columns }) => (
+const Columns: React.FC<ColumnsProps> = ({ columns }) => (
   <>
     {columns.map((column, index) => (
       <Column key={column._id} columnIndex={index} column={column} tasks={column.tasks} />
     ))}
   </>
-));
+);
 
 export default Columns;

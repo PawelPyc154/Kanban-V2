@@ -1,8 +1,9 @@
 import React from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
-import useLog from '../../hooks/auth/useLog';
 import useBoard from '../../hooks/board/useBoard';
+import useReorderColumn from '../../hooks/column/useReorderColumn';
+import useLog from '../../hooks/useLog';
 import Columns from './Columns';
 
 export interface KanbanProps {}
@@ -10,8 +11,10 @@ export interface KanbanProps {}
 const Kanban: React.FC<KanbanProps> = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data, error, isLoading } = useBoard(id);
+  const { data, error, isLoading, isFetching } = useBoard(id);
   useLog(data);
+
+  const { mutate } = useReorderColumn();
 
   const onDragEnd = ({ destination, source, draggableId, type }: DropResult) => {
     if (!destination || (destination.droppableId === source.droppableId && destination.index === source.index)) return;
@@ -19,6 +22,7 @@ const Kanban: React.FC<KanbanProps> = () => {
     if (type === 'column') {
       console.log('moveColumn');
       // move column
+      mutate({ boardId: id, fromIndex: source.index, toIndex: destination.index, columnId: draggableId });
       // setKanbanData((prev) => {
       //   const newColumnOrderIds = [...prev.columnOrderIds];
       //   newColumnOrderIds.splice(source.index, 1);
@@ -70,7 +74,8 @@ const Kanban: React.FC<KanbanProps> = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      {JSON.stringify(data)}
+      {JSON.stringify(isFetching)}
+      {JSON.stringify(isLoading)}
       <Droppable droppableId="columns" direction="horizontal" type="column">
         {(provided) => (
           <main
@@ -78,7 +83,7 @@ const Kanban: React.FC<KanbanProps> = () => {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {data?.board.columns && <Columns columns={data?.board.columns} />}
+            {data?.columns && <Columns columns={data?.columns} />}
             {provided.placeholder}
           </main>
         )}
