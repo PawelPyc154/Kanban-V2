@@ -8,7 +8,28 @@ import AppProviders from './components/appProviders';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    mutations: {
+      // onError: (e) => {
+      // if ('message' in (e as Error)) {
+      //   showErrorToast((e as Error).message);
+      // }
+      // },
+    },
+
+    queries: {
+      retry: false,
+      staleTime: 60 * 1000 * 5,
+      // onError: (e) => {
+      // if ('message' in (e as Error)) {
+      //   showErrorToast((e as Error).message);
+      // }
+      // },
+      // queryFn: defaultQueryFn,
+    },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>

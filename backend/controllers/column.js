@@ -12,17 +12,17 @@ exports.reorderColumn = asyncHandler(async (req, res) => {
 
   columns.splice(fromIndex, 1);
   columns.splice(toIndex, 0, columnId);
-
   board.columns = columns;
 
-  const board2 = await board.save().then((board22) =>
-    board22
-      .populate({
-        path: 'columns',
-        populate: { path: 'tasks' },
-      })
-      .execPopulate(),
-  );
+  const board2 = await board.save();
+  // .then((board22) =>
+  //   board22
+  //     .populate({
+  //       path: 'columns',
+  //       populate: { path: 'tasks' },
+  //     })
+  //     .execPopulate(),
+  // );
 
   res.status(200).json(board2);
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import Navigation from './components/navbar';
+import Navigation from './components/navigation';
 import Pages from './pages';
 
 export interface AppProps {}
