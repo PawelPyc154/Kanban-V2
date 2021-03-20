@@ -102,11 +102,8 @@ exports.login = asyncHandler(async (req, res, next) => {
 // @route        POST /api/auth/me
 // @access       Private
 exports.getMe = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user.id).populate({
-    path: 'chat.user',
-    select: 'name',
-  });
-  res.status(200).json({ success: true, user });
+  const user = await User.findById(req.user.id).select('email');
+  res.status(200).json(user);
 });
 
 // @desc         Logout clear cookie

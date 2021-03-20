@@ -19,6 +19,9 @@ const getMe = () => axiosApi.get('/auth/me').then((res) => res.data);
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const query = useQuery<{ email: string }, ApiError<{}>>('user', getMe, {
     retry: 1,
+    onError: () => {
+      axiosApi.get('/auth/logout');
+    },
   });
   return <UserContext.Provider value={query}>{children}</UserContext.Provider>;
 };
