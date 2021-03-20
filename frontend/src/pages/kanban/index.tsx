@@ -30,6 +30,7 @@ const Kanban: React.FC<KanbanProps> = () => {
       // });
       return;
     }
+    // rebuild
     if (type === 'task') {
       const startColumn = source.droppableId;
       const endColumn = destination.droppableId;
