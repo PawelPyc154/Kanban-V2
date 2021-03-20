@@ -14,6 +14,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     secure: false,
   };
   if (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production') {
+    options.secure = true;
     options.select = true;
     options.sameSite = 'none';
     options.httpOnly = true;
