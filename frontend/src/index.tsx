@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import App from './App';
-import AppProviders from './components/appProviders';
+import AppProviders from './components/providers';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 
@@ -21,11 +22,12 @@ const queryClient = new QueryClient({
     queries: {
       retry: false,
       staleTime: 60 * 1000 * 5,
-      // onError: (e) => {
-      // if ('message' in (e as Error)) {
-      //   showErrorToast((e as Error).message);
-      // }
-      // },
+      onError: (e) => {
+        if ('message' in (e as Error)) {
+          toast.error('Wow so easy!');
+          //  showErrorToast((e as Error).message);
+        }
+      },
       // queryFn: defaultQueryFn,
     },
   },

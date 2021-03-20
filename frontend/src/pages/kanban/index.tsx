@@ -5,63 +5,62 @@ import useBoard from '../../hooks/board/useBoard';
 import useReorderColumn from '../../hooks/column/useReorderColumn';
 import Columns from './Columns';
 
-export interface KanbanProps {}
-
-const Kanban: React.FC<KanbanProps> = () => {
+const Kanban: React.FC = () => {
   const { id } = useParams<{ id: string }>();
 
   const { data, error, isLoading, isFetching } = useBoard(id);
-  // useLog(data);
 
-  const { mutate } = useReorderColumn();
+  const reorderColumn = useReorderColumn();
 
   const onDragEnd = ({ destination, source, draggableId, type }: DropResult) => {
     if (!destination || (destination.droppableId === source.droppableId && destination.index === source.index)) return;
     // console.log(destination, source, draggableId, type);
-    if (type === 'column') {
-      // console.log('moveColumn');
-      // move column
-      mutate({ boardId: id, fromIndex: source.index, toIndex: destination.index, columnId: draggableId });
-      // setKanbanData((prev) => {
-      //   const newColumnOrderIds = [...prev.columnOrderIds];
-      //   newColumnOrderIds.splice(source.index, 1);
-      //   newColumnOrderIds.splice(destination.index, 0, draggableId);
-      //   return { ...prev, columnOrderIds: newColumnOrderIds };
-      // });
-      return;
-    }
-    // rebuild
-    if (type === 'task') {
-      const startColumn = source.droppableId;
-      const endColumn = destination.droppableId;
-      if (startColumn === endColumn) {
-        // startColumn === endColumn
-        // console.log('moveTask');
-        //   // move task inside column
-        //   setKanbanData((prev) => {
-        //     const newTaskOrderIds = [...startColumn.taskOrderIds];
-        //     newTaskOrderIds.splice(source.index, 1);
-        //     newTaskOrderIds.splice(destination.index, 0, draggableId);
-        //     const newColumn = { ...startColumn, taskOrderIds: newTaskOrderIds };
-        //     return { ...prev, columns: { ...prev.columns, [newColumn.id]: newColumn } };
-        //   });
-      } else {
-        // console.log('moveTaskBetweenColumn');
-        // move task between column
-        //     setKanbanData((prev) => {
-        //       const newStartTaskOrderIds = [...startColumn.taskOrderIds];
-        //       newStartTaskOrderIds.splice(source.index, 1);
-        //       const newStartColumn = { ...startColumn, taskOrderIds: newStartTaskOrderIds };
-        //       const newEndTaskOrderIds = [...endColumn.taskOrderIds];
-        //       newEndTaskOrderIds.splice(destination.index, 0, draggableId);
-        //       const newEndColumn = { ...endColumn, taskOrderIds: newEndTaskOrderIds };
-        //       return {
-        //         ...prev,
-        //         columns: { ...prev.columns, [newStartColumn.id]: newStartColumn, [newEndColumn.id]: newEndColumn },
-        //       };
-        //     });
-        //   }
+
+    switch (type) {
+      case 'column': {
+        reorderColumn.mutate({
+          boardId: id,
+          fromIndex: source.index,
+          toIndex: destination.index,
+          columnId: draggableId,
+        });
+        break;
       }
+      case 'task': {
+        const startColumn = source.droppableId;
+        const endColumn = destination.droppableId;
+        if (startColumn === endColumn) {
+          // startColumn === endColumn
+          // console.log('moveTask');
+          //   // move task inside column
+          //   setKanbanData((prev) => {
+          //     const newTaskOrderIds = [...startColumn.taskOrderIds];
+          //     newTaskOrderIds.splice(source.index, 1);
+          //     newTaskOrderIds.splice(destination.index, 0, draggableId);
+          //     const newColumn = { ...startColumn, taskOrderIds: newTaskOrderIds };
+          //     return { ...prev, columns: { ...prev.columns, [newColumn.id]: newColumn } };
+          //   });
+        } else {
+          // console.log('moveTaskBetweenColumn');
+          // move task between column
+          //     setKanbanData((prev) => {
+          //       const newStartTaskOrderIds = [...startColumn.taskOrderIds];
+          //       newStartTaskOrderIds.splice(source.index, 1);
+          //       const newStartColumn = { ...startColumn, taskOrderIds: newStartTaskOrderIds };
+          //       const newEndTaskOrderIds = [...endColumn.taskOrderIds];
+          //       newEndTaskOrderIds.splice(destination.index, 0, draggableId);
+          //       const newEndColumn = { ...endColumn, taskOrderIds: newEndTaskOrderIds };
+          //       return {
+          //         ...prev,
+          //         columns: { ...prev.columns, [newStartColumn.id]: newStartColumn, [newEndColumn.id]: newEndColumn },
+          //       };
+          //     });
+          //   }
+        }
+        break;
+      }
+      default:
+        break;
     }
   };
   if (isLoading) {

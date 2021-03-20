@@ -6,8 +6,6 @@ import Button from '../../components/formFields/Button';
 import Input from '../../components/formFields/Input';
 import { email } from '../../utils/validation';
 
-export interface LoginEmailFormProps {}
-
 export interface CompositionFormValues {
   email: string;
   password: string;
@@ -16,7 +14,7 @@ export interface CompositionFormValues {
 const schema = yup.object().shape({
   email,
 });
-const LoginEmailForm: React.FC<LoginEmailFormProps> = () => {
+const LoginEmailForm: React.FC = () => {
   const { register, handleSubmit, errors } = useForm<CompositionFormValues>({
     mode: 'onSubmit',
     resolver: yupResolver(schema),

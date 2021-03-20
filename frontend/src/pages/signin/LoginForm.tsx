@@ -8,14 +8,12 @@ import useLogin from '../../hooks/auth/useLogin';
 import LoginRequest from '../../models/LoginRequest';
 import { email, password } from '../../utils/validation';
 
-export interface LoginFormProps {}
-
 const schema = yup.object().shape({
   email,
   password,
 });
 
-const LoginForm: React.FC<LoginFormProps> = () => {
+const LoginForm: React.FC = () => {
   const { register, handleSubmit, errors, setError } = useForm<LoginRequest>({
     mode: 'onSubmit',
     resolver: yupResolver(schema),

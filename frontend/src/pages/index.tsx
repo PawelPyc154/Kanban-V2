@@ -7,9 +7,7 @@ const Signin = React.lazy(() => import('./signin'));
 const Kanbans = React.lazy(() => import('./kanbans'));
 const Kanban = React.lazy(() => import('./kanban'));
 
-export interface PagesProps {}
-
-const Pages: React.FC<PagesProps> = () => (
+const Pages: React.FC = () => (
   <Suspense fallback={<div> Loader</div>}>
     <Switch>
       <Route path="/about" component={Signin} />

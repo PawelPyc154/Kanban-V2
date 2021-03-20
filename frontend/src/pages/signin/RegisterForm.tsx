@@ -13,14 +13,12 @@ interface FormValue {
   passwordConfirm: string;
 }
 
-interface RegisterFormProps {}
-
 const schema = yup.object().shape({
   email,
   password,
 });
 
-const RegisterForm: React.FC<RegisterFormProps> = () => {
+const RegisterForm: React.FC = () => {
   const { register, handleSubmit, errors, setError } = useForm<FormValue>({
     mode: 'onSubmit',
     resolver: yupResolver(schema),

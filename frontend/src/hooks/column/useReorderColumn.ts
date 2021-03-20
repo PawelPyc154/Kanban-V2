@@ -38,10 +38,7 @@ const useReorderColumn = () => {
 
         return previousBoard;
       },
-      // onSuccess: (res, variables) => {
-      //   const key = ['board', variables.boardId];
-      //   queryClient.setQueryData<BoardType>(key, res.data);
-      // },
+
       onError: (err, variables, previousBoard) => {
         const key = ['board', variables.boardId];
         if (previousBoard) {

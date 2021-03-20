@@ -3,8 +3,6 @@ import { QueryObserverResult, useQuery } from 'react-query';
 import ApiError from '../../models/ApiError';
 import axiosApi from '../../utils/axiosApi';
 
-export interface UserProviderProps {}
-
 export const UserContext = React.createContext(
   {} as QueryObserverResult<
     {
@@ -16,7 +14,7 @@ export const UserContext = React.createContext(
 
 const getMe = () => axiosApi.get('/auth/me').then((res) => res.data);
 
-const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
+const UserProvider: React.FC = ({ children }) => {
   const query = useQuery<{ email: string }, ApiError<{}>>('user', getMe, {
     retry: 1,
     onError: () => {
