@@ -36,12 +36,12 @@ const useReorderColumn = () => {
 
       return { previousBoard };
     },
-    // onSuccess: (res, variable) => {
-    //   console.log('context;', res.data);
+    onSuccess: (res, variable) => {
+      console.log('context;', res.data);
 
-    //   const key = ['board', variable.boardId];
-    //   queryClient.setQueryData<BoardType>(key, res.data);
-    // },
+      const key = ['board', variable.boardId];
+      queryClient.setQueryData<BoardType>(key, res.data);
+    },
 
     onError: (err, variables, context: any) => {
       if (context?.previousTodos) {
@@ -49,11 +49,13 @@ const useReorderColumn = () => {
       }
     },
 
-    onSettled: (data, variables, context) => {
-      const key = ['board', context.boardId];
-      // console.log(' onSettled', data, variables, context);
-      queryClient.invalidateQueries(key);
-    },
+    // onSettled: (data, variables, context) => {
+    //   const key = ['board', context.boardId];
+    //   // console.log(' onSettled', data, variables, context);
+    //   queryClient.invalidateQueries(key);
+
+    //   // 187.569 ms 371.047 ms
+    // },
   });
 };
 export default useReorderColumn;
