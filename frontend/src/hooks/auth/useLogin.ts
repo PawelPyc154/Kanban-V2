@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { AxiosResponse } from 'axios';
 import { ErrorOption } from 'react-hook-form';
 import { useMutation, useQueryClient } from 'react-query';
