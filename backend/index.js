@@ -25,6 +25,9 @@ devHeplers(app);
 app = protect(app);
 
 routes(app);
+app.get('/', (req, res) => {
+  res.send(`${process.env.VERCEL_ENV}`);
+});
 
 app.use(errorHandler);
 
