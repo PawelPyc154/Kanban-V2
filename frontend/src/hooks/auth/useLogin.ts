@@ -14,12 +14,14 @@ const useLogin = (setError: (name: 'email' | 'password', error: ErrorOption) => 
   return useMutation<AxiosResponse<{ email: string }>, ApiError<{ email: string; password: string }>, LoginRequest>(
     (formValue) => axiosApi.post('/auth/login', formValue),
     {
-      onSuccess: () => {
+      onSuccess: (data) => {
+        console.log(data);
         queryClient.invalidateQueries('user');
         history.push('/kanban');
       },
 
       onError: (error) => {
+        console.log(error);
         if (error.response) {
           setApiFieldsErrors(error.response.data.error, setError);
         }
