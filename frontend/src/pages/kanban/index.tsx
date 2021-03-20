@@ -3,7 +3,6 @@ import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useParams } from 'react-router-dom';
 import useBoard from '../../hooks/board/useBoard';
 import useReorderColumn from '../../hooks/column/useReorderColumn';
-import useLog from '../../hooks/useLog';
 import Columns from './Columns';
 
 export interface KanbanProps {}
@@ -12,15 +11,15 @@ const Kanban: React.FC<KanbanProps> = () => {
   const { id } = useParams<{ id: string }>();
 
   const { data, error, isLoading, isFetching } = useBoard(id);
-  useLog(data);
+  // useLog(data);
 
   const { mutate } = useReorderColumn();
 
   const onDragEnd = ({ destination, source, draggableId, type }: DropResult) => {
     if (!destination || (destination.droppableId === source.droppableId && destination.index === source.index)) return;
-    console.log(destination, source, draggableId, type);
+    // console.log(destination, source, draggableId, type);
     if (type === 'column') {
-      console.log('moveColumn');
+      // console.log('moveColumn');
       // move column
       mutate({ boardId: id, fromIndex: source.index, toIndex: destination.index, columnId: draggableId });
       // setKanbanData((prev) => {
@@ -36,7 +35,7 @@ const Kanban: React.FC<KanbanProps> = () => {
       const endColumn = destination.droppableId;
       if (startColumn === endColumn) {
         // startColumn === endColumn
-        console.log('moveTask');
+        // console.log('moveTask');
         //   // move task inside column
         //   setKanbanData((prev) => {
         //     const newTaskOrderIds = [...startColumn.taskOrderIds];
@@ -46,7 +45,7 @@ const Kanban: React.FC<KanbanProps> = () => {
         //     return { ...prev, columns: { ...prev.columns, [newColumn.id]: newColumn } };
         //   });
       } else {
-        console.log('moveTaskBetweenColumn');
+        // console.log('moveTaskBetweenColumn');
         // move task between column
         //     setKanbanData((prev) => {
         //       const newStartTaskOrderIds = [...startColumn.taskOrderIds];

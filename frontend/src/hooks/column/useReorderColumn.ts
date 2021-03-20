@@ -51,7 +51,7 @@ const useReorderColumn = () => {
 
     onSettled: (data, variables, context) => {
       const key = ['board', context.boardId];
-      console.log(' onSettled', data, variables, context);
+      // console.log(' onSettled', data, variables, context);
       queryClient.invalidateQueries(key);
     },
   });

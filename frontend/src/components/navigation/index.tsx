@@ -19,9 +19,9 @@ const Navigation: React.FC<NavigationProps> = () => {
         queryClient.setQueryData(['user'], null);
         history.push('/signin');
       },
-      onError: (error, variables, context) => {
-        console.log(error, variables, context);
-      },
+      // onError: (error, variables, context) => {
+      // console.log(error, variables, context);
+      // },
     },
   );
 
