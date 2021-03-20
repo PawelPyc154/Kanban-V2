@@ -14,9 +14,9 @@ const sendTokenResponse = (user, statusCode, res) => {
     secure: false,
   };
   // if (process.env.NODE_ENV === 'production' || process.env.VERCEL_ENV === 'production') {
-  options.select = true;
-  options.sameSite = 'none';
-  options.httpOnly = true;
+  // options.select = true;
+  // options.sameSite = 'none';
+  // options.httpOnly = true;
   // }
 
   res.status(statusCode).cookie('token', token, options).json({ success: true });
